@@ -5,10 +5,7 @@ import gentjanahani.entities.Order;
 import gentjanahani.entities.Product;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Application {
@@ -83,6 +80,7 @@ public class Application {
                 prodotti.get(1),
                 prodotti.get(8),
                 prodotti.get(10)
+
         );
 
         Order primoOrdine = new Order(
@@ -161,6 +159,16 @@ public class Application {
 
 
         //ES4-Dato un elenco di ordini, calcola la media degli importi degli ordini utilizzando Stream e Lambda Expressions.
+
+        OptionalDouble mediaOrdini = ordini.stream()
+                .mapToDouble(order -> order.getProducts().stream()
+                        .mapToDouble(Product::getPrice)
+                        .sum()
+                )
+                .average();
+        if (mediaOrdini.isPresent()) System.out.println("La media degli ordini è: " + mediaOrdini.getAsDouble());
+        else System.out.println("Non sono presenti ordini.");
+
 
         //ES5-Dato un elenco di prodotti, raggruppa i prodotti per categoria e calcola la somma degli importi per categoria
         //utilizzando Stream e Lambda Expressions.
