@@ -172,6 +172,9 @@ public class Application {
 
         //ES5-Dato un elenco di prodotti, raggruppa i prodotti per categoria e calcola la somma degli importi per categoria
         //utilizzando Stream e Lambda Expressions.
+        Map<String, Double> prodottiPerCategoriaConSomma = prodotti.stream()
+                .collect(Collectors.groupingBy(Product::getCategory, Collectors.summingDouble(Product::getPrice)));
 
+        prodottiPerCategoriaConSomma.forEach((categoria, somma) -> System.out.println("Categoria: " + categoria + " Totale: € " + somma));
     }
 }
