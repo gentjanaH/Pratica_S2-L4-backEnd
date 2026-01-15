@@ -138,17 +138,26 @@ public class Application {
         //ES2-Dato un elenco di ordini, calcola il totale delle vendite per ogni cliente utilizzando Stream e Lambda Expressions.
         //Crea una mappa in cui la chiave è il cliente e il valore è l'importo totale dei suoi acquisti.
 //
-//        Map<Customer, Double> totaleVenditePerCliente = ordini.stream()
-//                .collect(Collectors.groupingBy(order -> order.getCustomer(),
-//                        Collectors.summingDouble()
-//                ));
+        Map<Customer, Double> totaleVenditePerCliente = ordini.stream()
+                .collect(Collectors.groupingBy(order -> order.getCustomer(),
+                        Collectors.summingDouble(order -> order.getProducts().stream()
+                                .mapToDouble(Product::getPrice)
+                                .sum()
+                        )
+                ));
+        totaleVenditePerCliente.forEach((cliente, totale) ->
+                System.out.println(cliente.getName() + " ha speso:  € " + totale));
 
 
         //ES3-Dato un elenco di prodotti, trova i  più costosi utilizzando Stream e Lambda Expressions.
         List<Product> prodottiPiùCostosi = prodotti.stream()
                 .sorted(Comparator.comparing(Product::getPrice).reversed())
+                .limit(5)
                 .toList();
-        System.out.println("Prodotti più costosi: " + prodottiPiùCostosi);
+        System.out.println("Elenco prodotti più costosi: " + prodottiPiùCostosi);
+
+        prodottiPiùCostosi.forEach((prodotto) ->
+                System.out.println(prodotto.getCategory() + " " + prodotto.getName() + " € " + prodotto.getPrice()));
 
 
         //ES4-Dato un elenco di ordini, calcola la media degli importi degli ordini utilizzando Stream e Lambda Expressions.
